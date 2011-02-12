@@ -37,7 +37,7 @@ app.get('/', function(req, res){
   });
 });
 
-var ideas = [{name: 'organizer', desc: 'an app for brainstorming and group forming', votes: 0, id: 'a'}, {name: 'aoeui', desc: 'lorem ipsum', votes: 0, id: 'b'}];
+var ideas = [];
 
 function format_time(d) {
   var h = d.getHours();
