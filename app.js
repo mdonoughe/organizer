@@ -7,15 +7,6 @@ var express = require('express');
 
 var app = module.exports = express.createServer();
 
-var RedisStore = require('connect-redis');
-
-var redis = require('redis');
-var redisClient = redis.createClient();
-
-redisClient.on('error', function(err) {
-  console.log("DB error " + err);
-});
-
 // Configuration
 
 app.configure(function(){
@@ -23,8 +14,6 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyDecoder());
   app.use(express.methodOverride());
-  app.use(express.cookieDecoder());
-  app.use(express.session({ store: new RedisStore, secret: 'iabxlp,bx' }));
   app.use(express.compiler({ src: __dirname + '/public', enable: ['sass'] }));
   app.use(app.router);
   app.use(express.staticProvider(__dirname + '/public'));
