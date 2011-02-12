@@ -162,9 +162,9 @@ function updateIdea(name, desc, votes, id) {
   for (var i = 0; i < ideas.length; i++) {
     if (ideas[i].id == id) {
       ideas[i].name = name;
-      $('.ideaName', ideas[i].box)[0].firstChild.data = name;
+      $('.ideaName', ideas[i].node)[0].firstChild.data = name;
       ideas[i].desc = desc;
-      $('.ideaDesc', ideas[i].box)[0].firstChild.data = desc;
+      $('.ideaDesc', ideas[i].node)[0].firstChild.data = desc;
       return;
     }
   }
