@@ -1,4 +1,4 @@
-socket = new io.Socket('portal.local');
+socket = new io.Socket(document.location.hostname);
 socket.connect();
 socket.on('connect', function() {
   document.body.appendChild(nameScreen);
