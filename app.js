@@ -116,7 +116,7 @@ socket.on('connection', function(client) {
     }
   });
   client.on('disconnect', function() {
-    if (client.vote) {
+    if (client.vote != undefined) {
       for (var i = 0; i < ideas.length; i++) {
         if (ideas[i].id == client.vote) {
           ideas[i].votes--;
