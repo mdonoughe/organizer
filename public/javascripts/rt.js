@@ -1,8 +1,15 @@
 socket = new io.Socket(document.location.hostname);
 socket.connect();
 socket.on('connect', function() {
-  document.body.appendChild(nameScreen);
+  if (uname == null) {
+    document.body.appendChild(nameScreen);
+  } else {
+    socket.send(JSON.stringify({type: 'name', name: uname}));
+  }
+  addChatLine('', 'app', 'connected');
   document.body.removeChild(connectScreen);
+  $('.ideaBox', ideaWindow).remove();
+  ideas = [];
 });
 socket.on('message', function(data) {
   var ev = JSON.parse(data);
@@ -15,7 +22,17 @@ socket.on('message', function(data) {
   }
 });
 socket.on('disconnect', function() {
-  addChatLine('', '', 'disconnected');
+  addChatLine('', 'app', 'disconnected');
+  document.body.appendChild(connectScreen);
+  var reconnect = function() {
+    if (!socket.connected) {
+      setTimeout(reconnect, 1000);
+      if (!socket.connecting) {
+        socket.connect();
+      }
+    }
+  };
+  reconnect();
 });
 
 var ideas = [];
@@ -92,12 +109,14 @@ var nameButton = document.createElement('input');
 nameButton.type = 'submit';
 nameButton.value = 'OK';
 nameButton.onclick = function() {
-  socket.send(JSON.stringify({type: 'name', name: nameInput.value}));
+  uname = nameInput.value;
+  socket.send(JSON.stringify({type: 'name', name: uname}));
   document.body.removeChild(nameScreen);
   return false;
 };
 nameScreen.appendChild(nameButton);
-document.body.appendChild(nameScreen);
+
+var uname = null;
 
 // connecting screen
 var connectScreen = document.createElement('div');
