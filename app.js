@@ -74,7 +74,6 @@ var io = require('socket.io');
 var socket = io.listen(app);
 socket.on('connection', function(client) {
   client.name = 'anonymous';
-  client.send(JSON.stringify({type: 'chat', time: format_time(new Date()), sender: 'server', text: 'hello'}));
   for (var i = 0; i < ideas.length; i++) {
     client.send(JSON.stringify({type: 'setIdea', name: ideas[i].name, desc: ideas[i].desc, votes: ideas[i].votes, id: ideas[i].id}));
   }
@@ -106,6 +105,7 @@ socket.on('connection', function(client) {
         }
       } else if (ev.type == 'name') {
         client.name = ev.name;
+        socket.broadcast(JSON.stringify({type: 'chat', time: format_time(new Date()), sender: 'server', text: 'hello ' + ev.name}));
       } else if (ev.type == 'idea') {
         idea = {id: nextEventID(), name: ev.name, desc: ev.desc, votes: 0};
         ideas.push(idea);
